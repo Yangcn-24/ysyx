@@ -1,0 +1,9 @@
+top=shift_reg
+
+clk BTNC
+rstn SW6
+in SW4
+load SW7
+data (SW3,SW2,SW1,SW0)
+R_L SW5
+q (LD3,LD2,LD1,LD0)

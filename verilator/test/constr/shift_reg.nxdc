@@ -1,0 +1,10 @@
+top=shift_reg
+
+clk PS2_DAT
+rstn BTNC
+in SW4
+load BTND
+data (SW3,SW2,SW1,SW0)
+R_L SW5
+ena BTNR
+q (LD3,LD2,LD1,LD0)

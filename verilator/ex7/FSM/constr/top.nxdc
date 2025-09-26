@@ -1,0 +1,6 @@
+top=top
+clk BTNC
+rstn BTNU
+in SW0
+out LD4
+o_state (LD3,LD2,LD1,LD0)
