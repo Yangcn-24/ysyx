@@ -2,35 +2,41 @@ CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)
 LIBS=-ldl $(OPTLIBS)
 PREFIX?=/usr/local
 
-SOURCES=$(wildcard src/**/*.c src/*.c)
-OBJECTS=$(patsubst %.c,%.o,$(SOURCES))
-
-TEST_SRC=$(wildcard tests/*_tests.c)
-TESTS=$(patsubst %.c,%,$(TEST_SRC))
-
-TARGET=build/libYOUR_LIBRARY.a
+SOURCES=$(shell find src -name *.c)
+OBJECTS=$(patsubst src/%.c,objs/%.o,$(SOURCES))
+TEST_SRC=$(shell find tests -name *_tests.c)
+TESTS=$(patsubst tests/%.c,bin/%,$(TEST_SRC))
+#static(.a)
+TARGET=build/libex29.a
+#dynamic(.so)
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
+# The Target tests
+all:$(SO_TARGET)
 
-# The Target Build
-all: $(TARGET) $(SO_TARGET) tests
+debug:
+	@echo $(SO_TARGET)
 
-dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)
-dev: all
+
+build/%.so:$(OBJECTS)
+	@mkdir -p $(dir $@)
+	$(CC) -shared $^ -o $@
+objs/%.o:src/%.c
+	@mkdir -p $(dir $@)
+	@$(CC) -c $< -o $@ -fPIC
 
 $(TARGET): CFLAGS += -fPIC
-$(TARGET): build $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	ar rcs $@ $(OBJECTS)
 	ranlib $@
 
-$(SO_TARGET): $(TARGET) $(OBJECTS)
-	$(CC) -shared -o $@ $(OBJECTS)
 
-build:
-	@mkdir -p build
-	@mkdir -p bin
+$(TESTS): tests/%.c
+	@mkdir -p $(dir $@)
+	$(CC) Wall -g -DNDEBUG -$< -ldl -o $@
+
 
 # The Unit Tests
-.PHONY: tests
+.PHONY: tests build 
 tests: CFLAGS += $(TARGET)
 tests: $(TESTS)
 	sh ./tests/runtests.sh
@@ -40,7 +46,7 @@ valgrind:
 
 # The Cleaner
 clean:
-	rm -rf build $(OBJECTS) $(TESTS)
+	rm -rf build $(OBJECTS) $(TESTS) objs
 	rm -f tests/tests.log
 	find . -name "*.gc*" -exec rm {} \;
 	rm -rf `find . -name "*.dSYM" -print`
