@@ -1,0 +1,4 @@
+[ERROR] (tests/ex29_tests.c:11: errno: None) USAGE: ex29 libex29.so function data
+[ERROR] (tests/ex29_tests.c:11: errno: None) USAGE: ex29 libex29.so function data
+[ERROR] (tests/ex29_tests.c:21: errno: None) Did not find j function in the library ./build/libex29.so: ./build/libex29.so: undefined symbol: j
+[ERROR] (tests/ex29_tests.c:21: errno: None) Did not find j function in the library ./build/libex29.so: ./build/libex29.so: undefined symbol: j

@@ -11,15 +11,15 @@ TARGET=build/libex29.a
 #dynamic(.so)
 SO_TARGET=$(patsubst %.a,%.so,$(TARGET))
 # The Target tests
-all:$(SO_TARGET)
+all:$(SO_TARGET) $(TESTS) tests
 
 debug:
-	@echo $(SO_TARGET)
+	@echo $(TESTS)
 
 
 build/%.so:$(OBJECTS)
 	@mkdir -p $(dir $@)
-	$(CC) -shared $^ -o $@
+	@$(CC) -shared $^ -o $@
 objs/%.o:src/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) -c $< -o $@ -fPIC
@@ -30,9 +30,9 @@ $(TARGET): $(OBJECTS)
 	ranlib $@
 
 
-$(TESTS): tests/%.c
+$(TESTS):$(TEST_SRC)
 	@mkdir -p $(dir $@)
-	$(CC) Wall -g -DNDEBUG -$< -ldl -o $@
+	$(CC) -Wall -g -DNDEBUG $< -ldl -o $@ -Isrc
 
 
 # The Unit Tests

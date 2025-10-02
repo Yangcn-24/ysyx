@@ -1,19 +1,23 @@
 echo "Running unit tests:"
-
-for i in tests/*_tests
+library="./build/libex29.so"
+function=("print_a_message" "uppercase" "lowercase ")
+for i in bin/*_tests
 do
-    if test -f $i
-    then
-        if $VALGRIND ./$i 2>> tests/tests.log
-        then
-            echo $i PASS
-        else
-            echo "ERROR in test $i: here's tests/tests.log"
-            echo "------"
-            tail tests/tests.log
-            exit 1
-        fi
-    fi
+	for function in "${function[@]}"
+	do
+	    if test -f $i
+	    then
+		if $VALGRIND ./$i $library $function "hello there" 2>> tests/tests.log
+		then
+		    echo $i PASS
+		else
+		    echo "ERROR in test $i: here's tests/tests.log"
+		    echo "------"
+		    tail tests/tests.log
+		    exit 1
+		fi
+	    fi
+	done
 done
 
 echo ""
