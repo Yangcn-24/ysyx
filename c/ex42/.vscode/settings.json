@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "cstddef": "cpp",
+        "type_traits": "cpp",
+        "cmath": "cpp",
+        "limits": "cpp",
+        "queue.h": "c",
+        "stdlib.h": "c"
+    }
+}
