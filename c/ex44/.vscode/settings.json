@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "bstrlib.h": "c",
+        "assert.h": "c",
+        "stddef.h": "c",
+        "stdio.h": "c"
+    }
+}
